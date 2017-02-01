@@ -83,6 +83,12 @@ def printmsg(msg, eol='\n', encoding='utf8'):
     sys.stdout.write(eol)
     sys.stdout.flush()
 
+def disabled_printmsg(msg, *args, **kwargs):
+    """
+    Empty placeholder function, used to disable printing of messages when
+    exporting to STDOUT without DEBUG
+    """
+    pass
 
 class OneWayPipe(object):
     """
@@ -242,7 +248,7 @@ class CopyTask(object):
 
         # do not display messages when exporting to STDOUT unless --debug is set
         self.printmsg = printmsg if self.fname is not None or direction == 'from' or DEBUG \
-            else lambda _, eol='\n': None
+            else disabled_printmsg
         self.options = self.parse_options(opts, direction)
 
         self.num_processes = self.options.copy['numprocesses']
